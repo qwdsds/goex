@@ -2,6 +2,7 @@ package spot
 
 import (
 	"encoding/json"
+
 	"github.com/buger/jsonparser"
 	"github.com/nntaoli-project/goex/v2/logger"
 	. "github.com/nntaoli-project/goex/v2/model"
@@ -44,6 +45,12 @@ func (u *RespUnmarshaler) UnmarshalGetDepthResponse(data []byte) (*Depth, error)
 	}, "asks")
 
 	return &dep, err
+}
+
+func (u *RespUnmarshaler) UnmarshalGetTickersResponse(data []byte) ([]*Ticker, error) {
+	var tickers []*Ticker
+	err := json.Unmarshal(data, &tickers)
+	return tickers, err
 }
 
 func (u *RespUnmarshaler) UnmarshalGetTickerResponse(data []byte) (*Ticker, error) {

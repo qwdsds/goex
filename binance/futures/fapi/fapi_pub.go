@@ -3,13 +3,14 @@ package fapi
 import (
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+
 	"github.com/nntaoli-project/goex/v2/binance/common"
 	. "github.com/nntaoli-project/goex/v2/httpcli"
 	"github.com/nntaoli-project/goex/v2/logger"
 	"github.com/nntaoli-project/goex/v2/model"
 	"github.com/nntaoli-project/goex/v2/util"
-	"net/http"
-	"net/url"
 )
 
 func (f *FApi) DoNoAuthRequest(httpMethod, reqUrl string, params *url.Values) ([]byte, []byte, error) {
@@ -87,8 +88,16 @@ func (f *FApi) GetDepth(pair model.CurrencyPair, limit int, opt ...model.OptionP
 }
 
 func (f *FApi) GetTicker(pair model.CurrencyPair, opt ...model.OptionParameter) (ticker *model.Ticker, responseBody []byte, err error) {
-	//TODO implement me
-	panic("implement me")
+	var param = url.Values{}
+	param.Set("symbol", pair.Symbol)
+
+	data, responseBody, err := f.DoNoAuthRequest(http.MethodGet, f.UriOpts.Endpoint+f.UriOpts.TickerUri, &param)
+	if err != nil {
+		return nil, responseBody, err
+	}
+	tk, err := f.UnmarshalOpts.TickerUnmarshaler(data)
+
+	return tk, data, err
 }
 
 func (f *FApi) GetKline(pair model.CurrencyPair, period model.KlinePeriod, opt ...model.OptionParameter) (klines []model.Kline, responseBody []byte, err error) {

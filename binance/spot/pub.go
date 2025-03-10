@@ -3,12 +3,13 @@ package spot
 import (
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+
 	. "github.com/nntaoli-project/goex/v2/httpcli"
 	"github.com/nntaoli-project/goex/v2/logger"
 	. "github.com/nntaoli-project/goex/v2/model"
 	. "github.com/nntaoli-project/goex/v2/util"
-	"net/http"
-	"net/url"
 )
 
 func (s *Spot) GetName() string {
@@ -31,9 +32,26 @@ func (s *Spot) GetDepth(pair CurrencyPair, size int, opts ...OptionParameter) (*
 	return dep, data, err
 }
 
+func (s *Spot) GetTickers() ([]*Ticker, []byte, error) {
+	data, err := s.DoNoAuthRequest(http.MethodGet,
+		fmt.Sprintf("%s%s", s.UriOpts.Endpoint, s.UriOpts.TickerUri), &url.Values{}, nil)
+	if err != nil {
+		return nil, data, fmt.Errorf("%w%s", err, errors.New(string(data)))
+	}
+
+	tks, err := s.UnmarshalerOpts.TickersUnmarshaler(data)
+	if err != nil {
+		return nil, data, err
+	}
+
+	return tks, data, err
+}
+
 func (s *Spot) GetTicker(pair CurrencyPair, opt ...OptionParameter) (*Ticker, []byte, error) {
 	params := url.Values{}
-	params.Set("symbol", pair.Symbol)
+	if len(pair.Symbol) > 0 {
+		params.Set("symbol", pair.Symbol)
+	}
 
 	if len(opt) > 0 {
 		for _, p := range opt {
@@ -85,10 +103,13 @@ func (s *Spot) GetExchangeInfo() (map[string]CurrencyPair, []byte, error) {
 func (s *Spot) DoNoAuthRequest(method, reqUrl string, params *url.Values, headers map[string]string) ([]byte, error) {
 	var reqBody string
 
+	encode := params.Encode()
 	if method == http.MethodGet {
-		reqUrl += "?" + params.Encode()
+		if len(encode) > 0 {
+			reqUrl += "?" + encode
+		}
 	} else {
-		reqBody = params.Encode()
+		reqBody = encode
 	}
 
 	responseData, err := Cli.DoRequest(method, reqUrl, reqBody, headers)

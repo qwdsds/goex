@@ -4,6 +4,7 @@ import "github.com/nntaoli-project/goex/v2/model"
 
 type ResponseUnmarshaler func([]byte, interface{}) error
 type GetTickerResponseUnmarshaler func([]byte) (*model.Ticker, error)
+type GetTickersResponseUnmarshaler func([]byte) ([]*model.Ticker, error)
 type GetDepthResponseUnmarshaler func([]byte) (*model.Depth, error)
 type GetKlineResponseUnmarshaler func([]byte) ([]model.Kline, error)
 type CreateOrderResponseUnmarshaler func([]byte) (*model.Order, error)
@@ -21,6 +22,7 @@ type GetFundingRateHistoryResponseUnmarshaler func([]byte) ([]model.FundingRate,
 type UnmarshalerOptions struct {
 	ResponseUnmarshaler                      ResponseUnmarshaler
 	TickerUnmarshaler                        GetTickerResponseUnmarshaler
+	TickersUnmarshaler                       GetTickersResponseUnmarshaler
 	DepthUnmarshaler                         GetDepthResponseUnmarshaler
 	KlineUnmarshaler                         GetKlineResponseUnmarshaler
 	CreateOrderResponseUnmarshaler           CreateOrderResponseUnmarshaler

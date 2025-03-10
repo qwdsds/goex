@@ -29,6 +29,7 @@ func NewFApi() *FApi {
 			GetExchangeInfoUri:  "/fapi/v1/exchangeInfo",
 		},
 		UnmarshalOpts: options.UnmarshalerOptions{
+			TickerUnmarshaler:                   UnmarshalTickerResponse,
 			GetExchangeInfoResponseUnmarshaler:  UnmarshalGetExchangeInfoResponse,
 			DepthUnmarshaler:                    UnmarshalDepthResponse,
 			KlineUnmarshaler:                    UnmarshalKlinesResponse,

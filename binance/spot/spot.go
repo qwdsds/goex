@@ -31,6 +31,7 @@ func New() *Spot {
 		UnmarshalerOpts: UnmarshalerOptions{
 			ResponseUnmarshaler:                 unmarshaler.UnmarshalResponse,
 			TickerUnmarshaler:                   unmarshaler.UnmarshalGetTickerResponse,
+			TickersUnmarshaler:                  unmarshaler.UnmarshalGetTickersResponse,
 			DepthUnmarshaler:                    unmarshaler.UnmarshalGetDepthResponse,
 			KlineUnmarshaler:                    unmarshaler.UnmarshalGetKlineResponse,
 			CreateOrderResponseUnmarshaler:      unmarshaler.UnmarshalCreateOrderResponse,

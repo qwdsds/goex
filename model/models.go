@@ -57,14 +57,15 @@ type CurrencyPair struct {
 //	return pair.Symbol
 //}
 
-//type FuturesCurrencyPair struct {
-//	CurrencyPair
-//	DeliveryDate int64   //结算日期
-//	OnboardDate  int64   //上线日期
-//	MarginAsset  float64 //保证金资产
-//}
+//	type FuturesCurrencyPair struct {
+//		CurrencyPair
+//		DeliveryDate int64   //结算日期
+//		OnboardDate  int64   //上线日期
+//		MarginAsset  float64 //保证金资产
+//	}
 
 type Ticker struct {
+	// Okx
 	Pair      CurrencyPair `json:"pair"`
 	Last      float64      `json:"l"`
 	Buy       float64      `json:"b"`
@@ -74,6 +75,45 @@ type Ticker struct {
 	Vol       float64      `json:"v"`
 	Percent   float64      `json:"percent"`
 	Timestamp int64        `json:"t"`
+
+	// binance
+	// https://developers.binance.com/docs/zh-CN/derivatives/usds-margined-futures/market-data/rest-api/24hr-Ticker-Price-Change-Statistics
+	Symbol             string `json:"symbol"`
+	PriceChange        string `json:"priceChange"`
+	PriceChangePercent string `json:"priceChangePercent"`
+	WeightedAvgPrice   string `json:"weightedAvgPrice"`
+	PrevClosePrice     string `json:"prevClosePrice"`
+	LastPrice          string `json:"lastPrice"`
+	LastQty            string `json:"lastQty"`
+	BidPrice           string `json:"bidPrice"`
+	BidQty             string `json:"bidQty"`
+	AskPrice           string `json:"askPrice"`
+	AskQty             string `json:"askQty"`
+	OpenPrice          string `json:"openPrice"`
+	HighPrice          string `json:"highPrice"`
+	LowPrice           string `json:"lowPrice"`
+	Volume             string `json:"volume"`
+	QuoteVolume        string `json:"quoteVolume"`
+	OpenTime           int64  `json:"openTime"`
+	CloseTime          int64  `json:"closeTime"`
+	FirstID            int    `json:"firstId"`
+	LastID             int    `json:"lastId"`
+	Count              int    `json:"count"`
+
+	// huobi
+	// https://www.htx.com/zh-cn/opend/newApiPages/?id=7ec40374-7773-11ed-9966-0242ac110003
+	// Symbol  string  `json:"symbol"`
+	Open float64 `json:"open"`
+	// High    float64 `json:"high"`
+	// Low     float64 `json:"low"`
+	Close  float64 `json:"close"` // 最新价
+	Amount float64 `json:"amount"`
+	// Vol     float64 `json:"vol"`
+	// Count   int     `json:"count"`
+	Bid     float64 `json:"bid"`
+	BidSize float64 `json:"bidSize"`
+	Ask     float64 `json:"ask"`
+	AskSize float64 `json:"askSize"`
 }
 
 type DepthItem struct {

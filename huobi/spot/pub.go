@@ -3,10 +3,12 @@ package spot
 import (
 	"errors"
 	"fmt"
-	. "github.com/nntaoli-project/goex/v2/httpcli"
-	. "github.com/nntaoli-project/goex/v2/model"
 	"net/http"
 	"net/url"
+
+	"github.com/goccy/go-json"
+	. "github.com/nntaoli-project/goex/v2/httpcli"
+	. "github.com/nntaoli-project/goex/v2/model"
 )
 
 func (s *Spot) GetName() string {
@@ -33,6 +35,24 @@ func (s *Spot) GetTicker(pair CurrencyPair, opt ...OptionParameter) (*Ticker, []
 	tk.Pair = pair
 
 	return tk, data, err
+}
+
+func (s *Spot) GetTickers() ([]*Ticker, []byte, error) {
+	path := "/market/tickers"
+	data, err := s.DoNoAuthRequest(http.MethodGet,
+		fmt.Sprintf("%s%s", s.uriOpts.Endpoint, path), nil, nil)
+	if err != nil {
+		return nil, data, fmt.Errorf("%w%s", err, errors.New(string(data)))
+	}
+
+	type resp struct {
+		Data []*Ticker `json:"data"`
+	}
+
+	var r resp
+	err = json.Unmarshal(data, &r)
+
+	return r.Data, data, err
 }
 
 func (s *Spot) GetKline(pair CurrencyPair, period KlinePeriod, opt ...OptionParameter) ([]Kline, []byte, error) {
