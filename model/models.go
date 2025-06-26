@@ -103,11 +103,11 @@ type Ticker struct {
 	// huobi
 	// https://www.htx.com/zh-cn/opend/newApiPages/?id=7ec40374-7773-11ed-9966-0242ac110003
 	// Symbol  string  `json:"symbol"`
-	Open float64 `json:"open"`
-	// High    float64 `json:"high"`
-	// Low     float64 `json:"low"`
-	Close  float64 `json:"close"` // 最新价
-	Amount float64 `json:"amount"`
+	Open      float64 `json:"open"`
+	HouBiHigh float64 `json:"high"`
+	HouBiLow  float64 `json:"low"`
+	Close     float64 `json:"close"` // 最新价
+	Amount    float64 `json:"amount"`
 	// Vol     float64 `json:"vol"`
 	// Count   int     `json:"count"`
 	Bid     float64 `json:"bid"`
