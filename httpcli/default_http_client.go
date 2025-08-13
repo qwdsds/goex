@@ -34,7 +34,7 @@ func NewDefaultHttpClient() *DefaultHttpClient {
 }
 
 func (cli *DefaultHttpClient) init() {
-	logger.Info("[http utils] setup default http client")
+	logger.Debugf("[http utils] setup default http client")
 
 	cli.timeout = 5 * time.Second
 	cli.cli = &http.Client{
@@ -57,7 +57,7 @@ func (cli *DefaultHttpClient) SetHeaders(key, value string) {
 func (cli *DefaultHttpClient) SetTimeout(sec int64) {
 	timeout := time.Duration(sec) * time.Second
 	cli.timeout = timeout
-	logger.Infof("[DefaultHttpClient] http(s) timeout: %s", timeout.String())
+	logger.Debugf("[DefaultHttpClient] http(s) timeout: %s", timeout.String())
 	cli.cli.Timeout = timeout
 	trans := cli.cli.Transport.(*http.Transport)
 	trans.ResponseHeaderTimeout = timeout
@@ -71,7 +71,7 @@ func (cli *DefaultHttpClient) SetProxy(proxy string) error {
 		logger.Warnf("[DefaultHttpClient] parse proxy url err: %s", err.Error())
 		return err
 	}
-	logger.Infof("[DefaultHttpClient] http(s) proxy url: %s", proxy)
+	logger.Debugf("[DefaultHttpClient] http(s) proxy url: %s", proxy)
 	trans := cli.cli.Transport.(*http.Transport)
 	trans.Proxy = func(request *http.Request) (*url.URL, error) {
 		return proxyUrl, nil
