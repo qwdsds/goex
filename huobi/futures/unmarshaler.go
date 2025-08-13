@@ -68,14 +68,18 @@ func UnmarshalTicker(data []byte) (*Ticker, error) {
 			if err != nil {
 				return err
 			}
-			tk.Buy = bids[0]
+			if len(bids) > 0 {
+				tk.Buy = bids[0]
+			}
 		case "ask":
 			var asks []float64
 			err := UnmarshalResponse(value, &asks)
 			if err != nil {
 				return err
 			}
-			tk.Sell = asks[0]
+			if len(asks) > 0 {
+				tk.Sell = asks[0]
+			}
 		}
 		return nil
 	})
