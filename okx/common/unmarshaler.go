@@ -59,6 +59,9 @@ func (un *RespUnmarshaler) unmarshalDepthItem(data []byte) (DepthItems, error) {
 }
 
 func (un *RespUnmarshaler) UnmarshalTicker(data []byte) (*Ticker, error) {
+	if len(data) == 0 {
+		return nil, errors.New("data is empty")
+	}
 	var tk = &Ticker{}
 
 	var open float64
